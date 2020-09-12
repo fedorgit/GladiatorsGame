@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Going to Die</title>
+
+        <link rel="stylesheet" href="./style/main.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r96/three.js" crossorigin="anonymous"></script>
+        <script src="./script/lib/GLTFLoader.js"></script>
+
+        <script src="./script/enum.js"></script>
+        <script src="./script/main.js"></script>
+        <script src="./script/service/viewService.js"></script>
+        <script src="./script/service/modelService.js"></script>
+        <script src="./script/service/userService.js"></script>
+        <script src="./script/model/user.js"></script>
+
+    </head>
+
+    <body>
+        <div id="js-view-connect">
+            <h3>Идущие на смерть приветствуют тебя!</h3>
+
+            <p>Вы выступаете в роли менеджера гладиаторов в сражениях на аренах.</p>
+		
+            Ваше имя: <input id="js-connect-user-name" value="Player">
+            <button onclick="connect()">Продолжить</button>
+        </div>
+
+        <div id="js-view-room">
+
+        </div>
+
+        <div id="js-view-lobby">
+
+        </div>
+
+        <div id="js-view-game">
+            <!--<canvas id="js-canvas-game"></canvas>-->
+        </div>
+
+        <div id="js-view-setting">
+
+        </div>
+
+        
+    </body>
+</html>

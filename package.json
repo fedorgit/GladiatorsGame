@@ -1,0 +1,33 @@
+{
+  "name": "gladiatorsgame",
+  "version": "0.0.1",
+  "description": "Going to Die - пошаговая мультиплеерная стратегия по тематике гладиаторских боев",
+  "main": "web-server.js",
+  "scripts": {
+    "client": "cd client && node web-server.js",
+    "server": "cd server && node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedorgit/gladiator_game.git"
+  },
+  "keywords": [
+    "multiplayer",
+    "step-by-step",
+    "strategy",
+    "gladiator",
+    "node",
+    "js",
+    "websocket"
+  ],
+  "author": "Fedorov Alexander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fedorgit/gladiator_game/issues"
+  },
+  "homepage": "https://github.com/fedorgit/gladiator_game#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ws": "^7.3.1"
+  }
+}
