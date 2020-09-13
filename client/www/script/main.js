@@ -59,8 +59,9 @@ function connect() {
 
 			let data = JSON.parse(event.data);
 
-
 			console.log(data);
+
+			Terminal.route(data);
 
 		} catch (error) {
 			

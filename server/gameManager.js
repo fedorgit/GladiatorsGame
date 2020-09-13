@@ -14,9 +14,9 @@ const gameManager = {
 
         const user = data.user;
 
-        if(!user.hasOwnProperty('user')) {
+        if(!user.hasOwnProperty('name')) {
 
-            console.error(`Protocol format error: no user data`);
+            console.error(`Protocol format error: no username`);
 
             return false;
         }
@@ -24,6 +24,8 @@ const gameManager = {
         console.log(`Create new Player name: ${data.name}`);
 
         this.sendSelectData(client);
+
+        return true;
     },
 
     /**
@@ -39,7 +41,7 @@ const gameManager = {
 
         let data = JSON.stringify(model);
 
-        client.send(client.wsi);
+        client.send(data);
     },
 
     /**
