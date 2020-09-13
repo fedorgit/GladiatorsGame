@@ -1,43 +1,65 @@
+const gameManager = require('./gameManager.js')
 
 const Controller = {
 
-    route(currentUser, data) {
+    /**
+     * 
+     * @param {Client} currentClient
+     * @param {Object} data 
+     */
+    route(currentClient, data) {
 
-        switch(currentUser.statusUserEnumId) {
+        switch(currentClient.status) {
 
             case StatusUserEnum.NONE: {
 
-                break;
+                return false;
             }
 
             case StatusUserEnum.CONNECT: {
 
-                console.log(`Create new Player name: ${data.name}`)
-
-                break;
+                return gameManager.actionConnect(currentClient, data);
             }
 
-            case StatusUserEnum.NAME: {
+            case StatusUserEnum.SELECT_ACTION: {
 
-                break;
+                if(!data.hasOwnProperty('selectEnumId')) {
+
+                    console.error(`Protocol format error: select action`);
+
+                    return false;
+                }
+
+                console.log(`User id: ${currentClient.id} chose action: ${data.selectEnumId}`);
+
+                return true;
             }
 
-            case StatusUserEnum.ROOM: {
+            case StatusUserEnum.CREATE_ROOM: {
 
-                break;
+                return true;
+            }
+
+            case StatusUserEnum.SELECT_ROOM: {
+
+                return true;
             }
 
             case StatusUserEnum.GAME: {
 
-                break;
+                return true;
             }
 
             case StatusUserEnum.DISCONNECT: {
 
-                break;
+                return true;
             }
 
         }
+        
+        console.error(`Error client status: ${currentClient.status}`)
+
+        return false;
 
     }
 }

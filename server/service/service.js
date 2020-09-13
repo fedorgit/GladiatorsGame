@@ -27,7 +27,7 @@ module.exports = class Service {
     get(id) {
 
         if(!this.elements.hasOwnProperty(id)) {
-            console.log('error get element in service ' + id);
+            console.error('error get element in service ' + id);
             return null;
         }
 
@@ -38,7 +38,7 @@ module.exports = class Service {
     remove(id) {
 
         if(!this.elements.hasOwnProperty(id)) {
-            console.log('error remove element in service ' + id);
+            console.error('error remove element in service ' + id);
             return;
         }
 

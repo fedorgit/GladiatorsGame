@@ -9,6 +9,9 @@ const Controller = require('./controller.js')
 const User = require('./model/user.js');
 const userService = require('./service/userService.js');
 
+const Client = require('./model/client.js')
+const clientService = require('./service/clientService.js');
+
 
 //import Room from "./room/room.js";
 //import RoomService from "./room/roomService.js";
@@ -30,33 +33,41 @@ const ws = new WebSocket.Server({
 
 console.log(`Start service: ${host}:${port}`);
 
-ws.on('connection', (wsi, request, currentUser) => {
+ws.on('connection', (wsi, request, currentClient) => {
 
-    let user = new User(wsi, StatusUserEnum.CONNECT);
+	let client = new Client(wsi, StatusUserEnum.CONNECT);
 	
-	currentUser = userService.add(user);
+	currentClient = clientService.add(client);
 
-	console.log(`Connect new user with id: ${user.id}`);
+	console.log(`Connect new client with id: ${currentClient.id}`);
 	
 	wsi.on('message', (message) => {
 		
 		try {
 
-			console.log(`User id: ${currentUser.id} sent message: ${message}`);
+			console.log(`Client id: ${currentClient.id} sent message: ${message}`);
 
 			let data = JSON.parse(message);
 
-			Controller.route(currentUser, data);
+			if(!Controller.route(currentClient, data)) {
+
+				console.log(`Error data client id: ${currentClient.id}`);
+
+				wsi.close();
+
+				clientService.remove(currentClient.id);
+			}
+
 
 		} catch(error) {
 
-			console.error(`User id: ${currentUser.id} error : data processing`);
+			console.error(`User id: ${currentClient.id} error : data processing`);
 
 			console.log(`Exeption ${error.name}: ${error.message} ${error.stack}`);
 
 			wsi.close();
 
-			userService.remove(currentUser.id);
+			userService.remove(currentClient.id);
 
 			return;
 		}
@@ -64,11 +75,11 @@ ws.on('connection', (wsi, request, currentUser) => {
 
 	wsi.on('close', () => {
 
-		console.log(`User with id ${currentUser.id} close`)
+		console.log(`User with id ${currentClient.id} close`)
 	});
 
 	wsi.on('disconnect', () => {
 
-		console.log(`User with id ${currentUser.id} disconnected`)
+		console.log(`User with id ${currentClient.id} disconnected`)
 	});
 });
