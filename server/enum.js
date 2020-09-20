@@ -1,22 +1,29 @@
-global.StatusUserEnum = Object.freeze({
+
+global.ClientStatusEnum = Object.freeze({
     NONE: 0,
     CONNECT: 1,
-    SELECT_ACTION: 2,
-    CREATE_ROOM: 3,
-    SELECT_ROOM: 4,
-    LOBBY: 5,
-    GAME: 6,
-    DISCONNECT: 7
+    SELECT_NAME: 2,
+    ACTION_ROOM: 3,
+    CREATE_ROOM: 4,
+    SELECT_ROOM: 5,
+    LOBBY: 6,
+    GAME: 7,
+    SETTING: 8,
+    DISCONNECT: 9
 });
 
-global.ViewComponentEnum = Object.freeze({
+
+global.ComponentEnum = Object.freeze({
     NONE: 0,
     CONNECT: 1,
-    SELECT: 1,
-    ROOM: 2,
-    LOBBY: 3,
-    GAME: 4,
-    SETTING: 5
+    SELECT_NAME: 2,
+    ACTION_ROOM: 3,
+    CREATE_ROOM: 4,
+    SELECT_ROOM: 5,
+    LOBBY: 6,
+    GAME: 7,
+    SETTING: 8,
+    DISCONNECT: 9
 });
 
 

@@ -18,7 +18,8 @@
     "gladiator",
     "node",
     "js",
-    "websocket"
+    "websocket",
+    "three.js"
   ],
   "author": "Fedorov Alexander",
   "license": "ISC",

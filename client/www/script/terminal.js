@@ -1,47 +1,45 @@
-
+/**
+ * Terminal - для взаимодействия с пользователем.
+ */
 
 const Terminal = {
 
-    route(data) {
+    connect() {
 
-        const status = data.clientStatusEnumId;
+        Controller.connect();
+    },
 
-        switch(status) {
+    selectName() {
 
-            case StatusUserEnum.NONE: {
+        const name = ViewService.getViewConnectName()
 
-                return false;
-            }
-
-            case StatusUserEnum.CONNECT: {
-
-
-                
-
-
-                return true;
-            }
-
-            case StatusUserEnum.SELECT_ACTION: {
-
-
-                return true;
-            }
-
-            case StatusUserEnum.CREATE_ROOM: {
-
-
-                return true;
-            }
-
-            case StatusUserEnum.SELECT_ROOM: {
-
-
-                return true;
-            }
-
-
+        const model = {
+            name: name
         }
+
+        const data = JSON.stringify(model);
+
+        Controller.send(data);
+    },
+
+    selectActionRoom(selectActionEnumId) {
+
+        const model = {
+            selectActionEnumId: selectActionEnumId
+        }
+
+        const data = JSON.stringify(model);
+
+        Controller.send(data);
+    },
+
+
+    createRoom() {
+
+    },
+
+    selectRoom() {
+
     }
 
 }

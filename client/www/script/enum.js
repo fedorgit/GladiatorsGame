@@ -1,10 +1,31 @@
-const StatusUserEnum = Object.freeze({
+const ComponentEnum = Object.freeze({
     NONE: 0,
     CONNECT: 1,
-    SELECT_ACTION: 2,
-    CREATE_ROOM: 3,
-    SELECT_ROOM: 4,
-    LOBBY: 5,
-    GAME: 6,
-    DISCONNECT: 7
+    SELECT_NAME: 2,
+    ACTION_ROOM: 3,
+    CREATE_ROOM: 4,
+    SELECT_ROOM: 5,
+    LOBBY: 6,
+    GAME: 7,
+    SETTING: 8,
+    DISCONNECT: 9
 });
+
+const ClientStatusEnum = Object.freeze({
+    NONE: 0,
+    CONNECT: 1,
+    SELECT_NAME: 2,
+    ACTION_ROOM: 3,
+    CREATE_ROOM: 4,
+    SELECT_ROOM: 5,
+    LOBBY: 6,
+    GAME: 7,
+    SETTING: 8,
+    DISCONNECT: 9
+});
+
+const SelectActionEnum = Object.freeze({
+    NONE: 0,
+    CREATE: 1,
+    SELECT: 2
+})

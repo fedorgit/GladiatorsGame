@@ -12,7 +12,6 @@ const userService = require('./service/userService.js');
 const Client = require('./model/client.js')
 const clientService = require('./service/clientService.js');
 
-
 //import Room from "./room/room.js";
 //import RoomService from "./room/roomService.js";
 
@@ -35,7 +34,7 @@ console.log(`Start service: ${host}:${port}`);
 
 ws.on('connection', (wsi, request, currentClient) => {
 
-	let client = new Client(wsi, StatusUserEnum.CONNECT);
+	let client = new Client(wsi, ClientStatusEnum.CONNECT);
 	
 	currentClient = clientService.add(client);
 

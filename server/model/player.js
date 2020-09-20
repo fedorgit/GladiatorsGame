@@ -3,10 +3,24 @@
  * 
  */
 
-class Player {
-    constructor(id, name, ) {
-        this.id = id;
+const Entity = require('./entity.js')
+
+module.exports = class Player extends Entity  {
+
+    #client = null;
+
+    constructor(name) {
+        super();
         this.name = name;
-        this.userLink = null;
+    }
+
+    getClient() {
+
+        return this.#client;
+    }
+
+    setClient(client) {
+
+        this.#client = client;
     }
 }

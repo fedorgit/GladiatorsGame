@@ -5,52 +5,59 @@ const Controller = {
     /**
      * 
      * @param {Client} currentClient
-     * @param {Object} data 
+     * @param {Object(Json)} data 
      */
     route(currentClient, data) {
 
-        switch(currentClient.status) {
+        const status = currentClient.status;
 
-            case StatusUserEnum.NONE: {
+        switch(status) {
+
+            case ClientStatusEnum.NONE: {
 
                 return false;
             }
 
-            case StatusUserEnum.CONNECT: {
+            case ClientStatusEnum.CONNECT: {
 
                 return gameManager.actionConnect(currentClient, data);
             }
 
-            case StatusUserEnum.SELECT_ACTION: {
+            case ClientStatusEnum.SELECT_NAME: {
 
-                if(!data.hasOwnProperty('selectEnumId')) {
+                return gameManager.actionSelectName(currentClient, data);
+            }
+
+            case ClientStatusEnum.ACTION_ROOM: {
+
+                if(!data.hasOwnProperty('selectActionEnumId')) {
 
                     console.error(`Protocol format error: select action`);
 
                     return false;
                 }
 
-                console.log(`User id: ${currentClient.id} chose action: ${data.selectEnumId}`);
+                console.log(`User id: ${currentClient.id} chose action: ${data.selectActionEnumId}`);
 
                 return true;
             }
 
-            case StatusUserEnum.CREATE_ROOM: {
+            case ClientStatusEnum.CREATE_ROOM: {
 
                 return true;
             }
 
-            case StatusUserEnum.SELECT_ROOM: {
+            case ClientStatusEnum.SELECT_ROOM: {
 
                 return true;
             }
 
-            case StatusUserEnum.GAME: {
+            case ClientStatusEnum.GAME: {
 
                 return true;
             }
 
-            case StatusUserEnum.DISCONNECT: {
+            case ClientStatusEnum.DISCONNECT: {
 
                 return true;
             }

@@ -8,6 +8,7 @@
 module.exports = class Client extends Entity {
 
     #user = null;
+    #player = null;
 
     constructor(wsi, status){
         super();
@@ -34,6 +35,27 @@ module.exports = class Client extends Entity {
         }
 
         this.#user = user;
+    }
+
+    /**
+     * Получить привязанного к пользователю игрока.
+     * @returns {Player}
+     */
+    getPlayer() {
+        return this.#player;
+    }
+
+    /**
+     * Установить к клиенту игрока.
+     * @param {Player} player
+     */
+    setPlayer(player) {
+        if(this.#player != null) {
+            console.error(`error setting player value for client id: ${this.id}`);
+            return;
+        }
+
+        this.#player = player;
     }
 
     /**

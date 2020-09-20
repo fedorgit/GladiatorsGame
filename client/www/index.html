@@ -12,39 +12,64 @@
         <script src="./script/enum.js"></script>
         <script src="./script/main.js"></script>
         <script src="./script/terminal.js"></script>
+        <script src="./script/controller.js"></script>
+        <script src="./script/manager/dataManager.js"></script>
+        <script src="./script/service/base/service.js"></script>
         <script src="./script/service/viewService.js"></script>
         <script src="./script/service/modelService.js"></script>
+        <script src="./script/service/current/currentUser.js"></script>
+        <script src="./script/service/current/currentClient.js"></script>
         <script src="./script/service/userService.js"></script>
+        <script src="./script/service/clientService.js"></script>
+        <script src="./script/service/playerService.js"></script>
         <script src="./script/model/user.js"></script>
+        <script src="./script/model/client.js"></script>
+        <script src="./script/model/player.js"></script>
 
     </head>
 
     <body>
-        <div id="js-view-connect">
+        <div id="js-component-connect" class="js-component">
             <h3>Идущие на смерть приветствуют тебя!</h3>
 
             <p>Вы выступаете в роли менеджера гладиаторов в сражениях на аренах.</p>
-		
+
+            <button onclick="Terminal.connect()">Подключиться</button>
+        </div>
+
+        <div id="js-component-select-name" class="js-component">
             Ваше имя: <input id="js-connect-user-name" value="Player">
-            <button onclick="connect()">Продолжить</button>
+            <button onclick="Terminal.selectName()">Продолжить</button>
         </div>
 
-        <div id="js-view-room">
+        <div id="js-component-action-room" class="js-component">
+            <button onclick="Terminal.createRoom()">Создать</button><br>
+            <button onclick="Terminal.selectRoom()">Подключиться</button>
+        </div>
+
+        <div id="js-component-create-room" class="js-component">
 
         </div>
 
-        <div id="js-view-lobby">
+        <div id="js-component-select-room" class="js-component">
 
         </div>
 
-        <div id="js-view-game">
+        <div id="js-component-lobby" class="js-component">
+
+        </div>
+
+        <div id="js-component-game" class="js-component">
             <!--<canvas id="js-canvas-game"></canvas>-->
         </div>
 
-        <div id="js-view-setting">
+        <div id="js-component-setting" class="js-component">
 
         </div>
 
+        <div id="js-component-disconnect" class="js-component">
+
+        </div>
         
     </body>
 </html>

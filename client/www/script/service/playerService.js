@@ -1,6 +1,5 @@
 
-
-class UserService extends Service {
+class PlayerService extends Service {
     constructor() {
         super();
     }
