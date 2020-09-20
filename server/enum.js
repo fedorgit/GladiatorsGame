@@ -27,8 +27,8 @@ global.ComponentEnum = Object.freeze({
 });
 
 
-global.SelectEnum = Object.freeze({
+global.ActionRoomEnum = Object.freeze({
     NONE: 0,
     CREATE: 1,
-    CONNECT: 2
-})
+    SELECT: 2
+});

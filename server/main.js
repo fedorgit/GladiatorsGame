@@ -4,6 +4,8 @@ const Enum = require('./enum.js');
 
 const configService = require('./service/configService.js');
 
+const mapService = require('./service/MapService.js');
+
 const Controller = require('./controller.js')
 
 const User = require('./model/user.js');
@@ -20,6 +22,10 @@ const clientService = require('./service/clientService.js');
 
 
 configService.init('./config.json');
+
+mapService.loadMaps('./resource/map', ['example.json']);
+
+console.log(mapService.get(1));
 
 const host = configService.config['host'];
 const port = configService.config['port'];

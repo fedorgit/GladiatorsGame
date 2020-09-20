@@ -5,17 +5,17 @@ module.exports = class Service {
 
         this.elements = {};
 
-        this.counterId = 0;
+        this._counterId = 0;
     }
 
-    getId() {
+    _getId() {
 
-        return ++this.counterId;
+        return ++this._counterId;
     }
 
     add(element) {
 
-        let id = this.getId();
+        let id = this._getId();
 
         element.id = id;
 
@@ -33,6 +33,22 @@ module.exports = class Service {
 
         return this.elements[id];
 
+    }
+
+    getList() {
+    
+        let result = [];
+
+        for(const [_, element] of Object.entries(this.elements)) {
+            result.push(element);
+        }
+
+        return result;
+    }
+
+    getDict() {
+
+        return this.elements;
     }
 
     remove(id) {

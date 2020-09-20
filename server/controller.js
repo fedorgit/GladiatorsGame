@@ -30,14 +30,7 @@ const Controller = {
 
             case ClientStatusEnum.ACTION_ROOM: {
 
-                if(!data.hasOwnProperty('selectActionEnumId')) {
-
-                    console.error(`Protocol format error: select action`);
-
-                    return false;
-                }
-
-                console.log(`User id: ${currentClient.id} chose action: ${data.selectActionEnumId}`);
+                return gameManager.actionSelectActionRoom(currentClient, data);
 
                 return true;
             }

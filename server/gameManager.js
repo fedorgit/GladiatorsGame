@@ -2,6 +2,7 @@
 const Enum = require('./enum.js');
 
 const Player = require('./model/player.js');
+const mapService = require('./service/MapService.js');
 const playerService = require('./service/playerService.js');
 
 const gameManager = {
@@ -88,34 +89,75 @@ const gameManager = {
 
     actionSelectActionRoom(client, data) {
         
-        if(!data.hasOwnProperty('selectActionEnumId')) {
+        if(!data.hasOwnProperty('actionRoomEnumId')) {
 
-            console.error(`Protocol format error: no selectActionEnumId`);
+            console.error(`Protocol format error: select action enum`);
 
             return false;
         }
 
-        const selectActionEnumId = data.selectActionEnumId;
+        const actionRoomEnumId = data.selectActionEnumId;
 
-        if(selectActionEnumId = SelectActionEnum.NONE)
+        console.log(`User id: ${client.id} chose action: ${data.actionRoomEnumId}`);
+
+        if(actionRoomEnumId = ActionRoomEnum.NONE)
             return false;
 
-        if(selectActionEnumId = SelectActionEnum.CREATE)
-            this.sendRoomData(client);
+        if(actionRoomEnumId = ActionRoomEnum.CREATE) {
 
-        if(selectActionEnumId = SelectActionEnum.SELECT)
-            this.sendRoomData(client);
+            client.status = ClientStatusEnum.CREATE_ROOM;
 
-        return true;
+            this.sendCreateRoomData(client);
+
+            return true;
+        }
+            
+        if(actionRoomEnumId = ActionRoomEnum.SELECT) {
+
+            client.status = ClientStatusEnum.SELECT_ROOM;
+
+            this.sendSelectRoomData(client);
+
+            return true;
+        }
+
+        console.error(`Error select chose action room: ${actionRoomEnumId}`);
+
+        return false;
     },
 
     /**
      * Отправить пользователю данные об игровых комнатах
-     * @param {User} user 
+     * @param {Client} client 
      */
-    sendSelectRoomData(user) {
+    sendCreateRoomData(client) {
 
-        const game = user.gameLink;
+        // maps
+        // 
+
+        const maps = mapService.getList();
+
+        let model = {
+
+            clientStatusEnumId: client.status,
+
+            componentEnumId: ComponentEnum.SELECT_NAME,
+
+            games: game.getRooms(),
+            
+            maps: MapService.getBasePublicModelList()
+        }
+
+        let data = JSON.stringify(model);
+    },
+
+    /**
+     * Отправить пользователю данные об игровых комнатах
+     * @param {Client} client 
+     */
+    sendSelectRoomData(client) {
+
+        const game = client.gameLink;
 
         const rooms = game.getRooms();
 

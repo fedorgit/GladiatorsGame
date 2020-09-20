@@ -24,8 +24,8 @@ const ClientStatusEnum = Object.freeze({
     DISCONNECT: 9
 });
 
-const SelectActionEnum = Object.freeze({
+const ActionRoomEnum = Object.freeze({
     NONE: 0,
     CREATE: 1,
     SELECT: 2
-})
+});

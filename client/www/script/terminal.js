@@ -22,24 +22,15 @@ const Terminal = {
         Controller.send(data);
     },
 
-    selectActionRoom(selectActionEnumId) {
+    selectActionRoom(actionRoomEnumId) {
 
         const model = {
-            selectActionEnumId: selectActionEnumId
+            actionRoomEnumId: actionRoomEnumId
         }
 
         const data = JSON.stringify(model);
 
         Controller.send(data);
-    },
-
-
-    createRoom() {
-
-    },
-
-    selectRoom() {
-
     }
 
 }
