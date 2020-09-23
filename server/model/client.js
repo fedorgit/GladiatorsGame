@@ -50,7 +50,7 @@ module.exports = class Client extends Entity {
      * @param {Player} player
      */
     setPlayer(player) {
-        if(this.#player != null) {
+        if(player != null && this.#player != null) {
             console.error(`error setting player value for client id: ${this.id}`);
             return;
         }

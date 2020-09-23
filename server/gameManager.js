@@ -2,8 +2,8 @@
 const Enum = require('./enum.js');
 
 const Player = require('./model/player.js');
-const mapService = require('./service/MapService.js');
-const playerService = require('./service/playerService.js');
+const Room = require('./model/room.js');
+const DataManager = require('./dataManager.js');
 
 const gameManager = {
 
@@ -55,7 +55,7 @@ const gameManager = {
 
         let player = new Player(data.name);
 
-        player = playerService.add(player);
+        player = DataManager.playerService.add(player);
 
         player.setClient(client);
 
@@ -96,14 +96,14 @@ const gameManager = {
             return false;
         }
 
-        const actionRoomEnumId = data.selectActionEnumId;
+        const actionRoomEnumId = data.actionRoomEnumId;
 
         console.log(`User id: ${client.id} chose action: ${data.actionRoomEnumId}`);
 
-        if(actionRoomEnumId = ActionRoomEnum.NONE)
+        if(actionRoomEnumId == ActionRoomEnum.NONE)
             return false;
 
-        if(actionRoomEnumId = ActionRoomEnum.CREATE) {
+        if(actionRoomEnumId == ActionRoomEnum.CREATE) {
 
             client.status = ClientStatusEnum.CREATE_ROOM;
 
@@ -112,7 +112,7 @@ const gameManager = {
             return true;
         }
             
-        if(actionRoomEnumId = ActionRoomEnum.SELECT) {
+        if(actionRoomEnumId == ActionRoomEnum.SELECT) {
 
             client.status = ClientStatusEnum.SELECT_ROOM;
 
@@ -132,45 +132,167 @@ const gameManager = {
      */
     sendCreateRoomData(client) {
 
-        // maps
-        // 
-
-        const maps = mapService.getList();
+        const maps = DataManager.mapService.getSimpleList();
 
         let model = {
 
             clientStatusEnumId: client.status,
-
-            componentEnumId: ComponentEnum.SELECT_NAME,
-
-            games: game.getRooms(),
-            
-            maps: MapService.getBasePublicModelList()
+            componentEnumId: ComponentEnum.CREATE_ROOM,
+            maps: maps
         }
 
         let data = JSON.stringify(model);
+
+        client.send(data);
     },
 
     /**
-     * Отправить пользователю данные об игровых комнатах
+     * Отправить пользователю данные об игровых комнатах.
      * @param {Client} client 
      */
     sendSelectRoomData(client) {
 
-        const game = client.gameLink;
-
-        const rooms = game.getRooms();
+        const rooms = DataManager.roomService.getPublicList();
 
         let model = {
-
-            viewComponentEnumId: ViewComponentEnum.ROOM,
-
-            games: game.getRooms(),
-            
-            maps: MapService.getBasePublicModelList()
+            clientStatusEnumId: client.status,
+            componentEnumId: ComponentEnum.SELECT_ROOM,
+            rooms: rooms
         }
 
         let data = JSON.stringify(model);
+
+        client.send(data);
+    },
+
+    /**
+     * 
+     * @param {Client} client 
+     * @param {Object(Json)} data 
+     */
+    actionCreateRoom(client, data) {
+
+        if(!data.hasOwnProperty('mapId')) {
+
+            console.error(`Protocol format error: map id`);
+
+            return false;
+        }
+
+        if(!data.hasOwnProperty('roomName')) {
+
+            console.error(`Protocol format error: room name`);
+
+            return false;
+        }
+
+        const mapId = data.mapId;
+
+        const map = DataManager.mapService.get(mapId);
+
+        if(map == null) {
+
+            console.error(`Error select map not found: ${mapId}`);
+
+            return false;
+        }
+
+        const roomName = data.roomName;
+
+        // TODO: проверка названия комнаты на дубликат
+
+        const player = client.getPlayer();
+
+        let room = new Room(player, roomName, map);
+
+        player.setRoom(room);
+
+        room = DataManager.roomService.add(room);
+
+        client.status = ClientStatusEnum.HOST_LOBBY;
+        
+        this.sendHostLobbyData(client);
+
+        return true;
+    },
+
+    sendHostLobbyData(client) {
+
+        const player = client.getPlayer();
+
+        const maps = DataManager.mapService.getSimpleList();
+
+        const lobby = player.room.getLobby();
+
+        const isHost = player.id == player.room.hostPlayer.id;
+
+        let model = {
+            clientStatusEnumId: client.status,
+            componentEnumId: ComponentEnum.HOST_LOBBY,
+            maps: maps,
+            lobby: lobby
+        }
+
+        let data = JSON.stringify(model);
+
+        client.send(data);
+    },
+
+    /**
+     * Клиент выбрал игровую комнату.
+     * @param {Client} client 
+     * @param {Object(Json)} data 
+     */
+    actionSelectRoom(client, data) {
+
+        if(!data.hasOwnProperty('roomId')) {
+
+            console.error(`Protocol format error: room name`);
+
+            return false;
+        }
+
+        const roomId = data.roomId;
+
+        const room = DataManager.roomService.get(roomId);
+
+        if(room == null) {
+
+            console.error(`Error select room not found: ${roomId}`);
+
+            return false;
+        }
+
+        const player = client.getPlayer();
+
+        // TODO: проверка возможности зайти в комнату
+
+        room.addPlayer(player);
+
+        player.setRoom(room);
+
+        client.status = ClientStatusEnum.CLIENT_LOBBY;
+
+        this.sendClientLobbyData(client);
+
+        return true;
+    },
+
+    sendClientLobbyData(client) {
+
+        const player = client.getPlayer();
+
+        const lobby = player.room.getLobby();
+
+        let model = {
+            clientStatusEnumId: client.status,
+            componentEnumId: ComponentEnum.CLIENT_LOBBY,
+            lobby: lobby
+        }
+
+        let data = JSON.stringify(model);
+
+        client.send(data);
     }
 }
 

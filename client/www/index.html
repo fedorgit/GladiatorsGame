@@ -15,6 +15,8 @@
         <script src="./script/controller.js"></script>
         <script src="./script/manager/dataManager.js"></script>
         <script src="./script/service/base/service.js"></script>
+        <script src="./script/element/slotHostElement.js"></script>
+        <script src="./script/element/slotClientElement.js"></script>
         <script src="./script/service/viewService.js"></script>
         <script src="./script/service/modelService.js"></script>
         <script src="./script/service/current/currentUser.js"></script>
@@ -43,20 +45,49 @@
         </div>
 
         <div id="js-component-action-room" class="js-component">
-            <button onclick="Terminal.selectActionRoom(SelectActionEnum.CREATE)">Создать</button><br>
-            <button onclick="Terminal.selectActionRoom(SelectActionEnum.SELECT)">Подключиться</button>
+            <button onclick="Terminal.selectActionRoom(ActionRoomEnum.CREATE)">Создать</button><br>
+            <button onclick="Terminal.selectActionRoom(ActionRoomEnum.SELECT)">Подключиться</button>
         </div>
 
         <div id="js-component-create-room" class="js-component">
-
+			<b>Создать игровую комнату</b><br>
+			Room name: <input id="js-name-create-room"> 
+			Map name: <select id="js-select-map-create-room"></select>
+			<button onclick="Terminal.createRoom();">Создать комнату</button>
         </div>
 
         <div id="js-component-select-room" class="js-component">
-
+            Rooms: <select id="js-select-room" size="0"></select>
+			<button onclick="Terminal.selectRoom();">Выбрать комнату</button>
         </div>
 
-        <div id="js-component-lobby" class="js-component">
+        <div id="js-component-host-lobby" class="js-component">
+            <h3>Lobby</h3>
+            Map: <select id="js-select-map-host-lobby"></select>
+            <hr>
 
+            <h4>Players:</h4>
+            <div id="js-slot-host-lobby"></div>
+
+            <h4>Stash:</h4>
+            <div id="js-stash-host-lobby"></div>
+
+            <button onclick="Terminal.leaveLobby();">Покинуть</button>
+            <button onclick="Terminal.startGame();">Старт</button>
+        </div>
+
+        <div id="js-component-client-lobby" class="js-component">
+            <h3>Lobby</h3>
+            Map: <span id="js-name-map-client-lobby"></span>
+            <hr>
+
+            <h4>Players:</h4>
+            <div id="js-slot-client-lobby"></div>
+
+            <h4>Stash:</h4>
+            <div id="js-stash-client-lobby"></div>
+
+            <button onclick="Terminal.leaveLobby();">Покинуть</button>
         </div>
 
         <div id="js-component-game" class="js-component">

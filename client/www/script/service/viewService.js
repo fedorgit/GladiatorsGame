@@ -10,12 +10,26 @@ const ViewService = {
     componentActionRoomElement: null,
     componentCreateRoomElement: null,
     componentSelectRoomElement: null,
-    componentLobbyElement: null,
+    componentHostLobbyElement: null,
+    componentClientLobbyElement: null,
     componentGameElement: null,
     componentSettingElement: null,
     componentDisconnectElement: null,
 
     componentElements: null,
+
+    selectMapCreateRoomElement: null,
+    nameCreateRoomElement: null,
+
+    selectRoomElement: null,
+
+    selectMapHostLobbyElement: null,
+    slotHostLobbyElement: null,
+    stashHostLobbyElement: null,
+
+    nameMapHostLobbyElement: null,
+    slotClientLobbyElement: null,
+    stashClientLobbyElement: null,
 
     init() {
         this.componentConnectElement = document.getElementById('js-component-connect');
@@ -23,7 +37,8 @@ const ViewService = {
         this.componentActionRoomElement = document.getElementById('js-component-action-room');
         this.componentCreateRoomElement = document.getElementById('js-component-create-room');
         this.componentSelectRoomElement = document.getElementById('js-component-select-room');
-        this.componentLobbyElement = document.getElementById('js-component-lobby');
+        this.componentHostLobbyElement = document.getElementById('js-component-host-lobby');
+        this.componentClientLobbyElement = document.getElementById('js-component-client-lobby');
         this.componentGameElement = document.getElementById('js-component-game');
         this.componentSettingElement = document.getElementById('js-component-setting');
         this.componentDisconnectElement = document.getElementById('js-component-disconnect');
@@ -31,6 +46,22 @@ const ViewService = {
         this.componentElements = document.getElementsByClassName('js-component');
 
         this.setComponent(ComponentEnum.CONNECT);
+
+        this.nameCreateRoomElement = document.getElementById('js-name-create-room');
+        this.selectMapCreateRoomElement = document.getElementById('js-select-map-create-room');
+
+        this.selectRoomElement = document.getElementById('js-select-room');
+
+        // HOST_LOBBY
+        this.selectMapHostLobbyElement = document.getElementById('js-select-map-host-lobby');
+        this.slotHostLobbyElement = document.getElementById('js-slot-host-lobby');
+        this.stashHostLobbyElement = document.getElementById('js-stash-host-lobby');
+
+        // CLIENT_LOBBY
+        this.nameMapHostLobbyElement = document.getElementById('js-name-map-client-lobby');
+        this.slotClientLobbyElement = document.getElementById('js-slot-client-lobby');
+        this.stashClientLobbyElement = document.getElementById('js-stash-client-lobby');
+
     },
 
     /**
@@ -73,8 +104,156 @@ const ViewService = {
                 this.componentSelectRoomElement.style = 'display: block;';
             break;
             
-            // TODO: add
+            case ComponentEnum.HOST_LOBBY:
+
+                this.componentHostLobbyElement.style = 'display: block;';
+            break;
+
+            case ComponentEnum.CLIENT_LOBBY:
+
+                this.componentClientLobbyElement.style = 'display: block;';
+            break;
         }
+    },
+
+    /**
+     * Установить список карт на выбор игроком.
+     * @param {[Object]} maps 
+     */
+    setSimpleMapsData(maps) {
+
+        console.log(this.selectMapCreateRoomElement);
+
+        while (this.selectMapCreateRoomElement.firstChild)
+            this.selectMapCreateRoomElement.removeChild(this.selectMapCreateRoomElement.firstChild);
+
+        let options = [];
+        for (let map of maps)
+            options.push(new Option(map.name, map.id, false, false));
+
+        for(let option of options)
+            this.selectMapCreateRoomElement.appendChild(option);
+    },
+
+    /**
+     * Получить название карты выбранное пользователем.
+     * @returns {string} - Название карты.
+     */
+    getNameCreateRoom() {
+
+        const nameRoom = this.nameCreateRoomElement.value;
+
+        return nameRoom;
+    },
+
+    /**
+     * Получить идентификатор карты выбранный пользователем.
+     * @returns {number} - Идентификатор карты.
+     */
+    getSelectMapCreateRoom() {
+
+        const mapId = ViewService.selectMapCreateRoomElement.value;
+
+        return mapId;
+    },
+
+    setSelectRoomsData(rooms) {
+
+        while (this.selectRoomElement.firstChild)
+		    ViewService.selectRoomElement.removeChild(this.selectRoomElement.firstChild);
+
+        let options = [];
+        for (let room of rooms) {
+
+            const roomName = `(${room.playerCount}/${room.playerCountMax}) ${room.name} - ${room.map.name} (${room.map.playerCount})`;
+
+            options.push(new Option(roomName, room.id, false, false));
+        }
+
+        for(let option of options)
+            this.selectRoomElement.appendChild(option);
+    },
+
+    getSelectRoom() {
+
+        const roomId = this.selectRoomElement.value;
+
+        return roomId;
+    },
+
+    setHostLobbyData(maps, lobby) {
+        
+        while (this.selectMapHostLobbyElement.firstChild)
+            this.selectMapHostLobbyElement.removeChild(this.selectMapHostLobbyElement.firstChild);
+
+        let options = [];
+        for (let map of maps)
+            options.push(new Option(map.name, map.id, false, false));
+
+        for(let option of options)
+            this.selectMapHostLobbyElement.appendChild(option);
+            
+
+        for(let slot of lobby.slots) {
+
+            let slotHostElement = new SlotHostElement(slot);
+
+            this.slotHostLobbyElement.appendChild(slotHostElement.element);
+        }
+
+        for(let stash of lobby.stashs) {
+
+            //let stashElement = createStast(stash);
+
+            //this.stashLobbyElement.appendChild(stashElement);
+        }
+    },
+
+    setClientLobbyData(lobby) {
+
+        this.nameMapHostLobbyElement.prepend(`${lobby.map.name}`);
+
+        for(let slot of lobby.slots) {
+
+            let slotClientElement = new SlotClientElement(slot);
+
+            this.slotClientLobbyElement.appendChild(slotClientElement.element);
+        }
+
+        for(let stash of lobby.stashs) {
+
+            //let stashElement = createStast(stash);
+
+            //this.stashLobbyElement.appendChild(stashElement);
+        }
+    },
+
+    createSlot(slot) {
+
+    },
+
+    updateMapLobby(map) {
+
+        // TODO: Миникарта
+
+    },
+
+    /**
+     * Обновление данных лобби, нельзя пересозавать данные, только обновление изменений.
+     * @param {*} slots
+     */
+    updateSlotLobby(slots) {
+
+        for(let slot of slots) {
+            
+        }
+
+    },
+
+
+
+    updateStashLobby(stash) {
+
     },
 
     getViewConnectName() {

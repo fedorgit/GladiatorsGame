@@ -14,7 +14,11 @@ module.exports = class Map extends Entity  {
 
         this.name = model.name;
 
+        this.description = model.description;
+
         this.start = model.start;
+
+        this.playerCount = model.players;
 
         this.graphs = [];
 

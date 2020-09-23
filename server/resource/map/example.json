@@ -1,5 +1,7 @@
 {
 	"name": "example",
+	"description": "description",
+	"players": 3,
 	"start": [2, 7, 12],
 	"graphs": [
 		{"id": 0, "x": 2, "y": 3, "links": [1, 5, 6] },

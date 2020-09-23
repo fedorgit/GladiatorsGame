@@ -31,16 +31,24 @@ const Controller = {
             case ClientStatusEnum.ACTION_ROOM: {
 
                 return gameManager.actionSelectActionRoom(currentClient, data);
-
-                return true;
             }
 
             case ClientStatusEnum.CREATE_ROOM: {
 
-                return true;
+                return gameManager.actionCreateRoom(currentClient, data);
             }
 
             case ClientStatusEnum.SELECT_ROOM: {
+
+                return gameManager.actionSelectRoom(currentClient, data);
+            }
+
+            case ClientStatusEnum.LOBBY: {
+
+                return true;
+            }
+
+            case ClientStatusEnum.UPDATE_LOBBY: {
 
                 return true;
             }

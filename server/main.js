@@ -4,28 +4,19 @@ const Enum = require('./enum.js');
 
 const configService = require('./service/configService.js');
 
-const mapService = require('./service/MapService.js');
+const DataManager =  require('./dataManager.js');
 
 const Controller = require('./controller.js')
 
-const User = require('./model/user.js');
-const userService = require('./service/userService.js');
+const User = require('./model/user.js')
 
 const Client = require('./model/client.js')
-const clientService = require('./service/clientService.js');
-
-//import Room from "./room/room.js";
-//import RoomService from "./room/roomService.js";
-
-//import GamePlayService from "./gamePlayService.js";
 
 
 
 configService.init('./config.json');
 
-mapService.loadMaps('./resource/map', ['example.json']);
-
-console.log(mapService.get(1));
+DataManager.mapService.loadMaps('./resource/map', ['example.json']);
 
 const host = configService.config['host'];
 const port = configService.config['port'];
@@ -42,7 +33,7 @@ ws.on('connection', (wsi, request, currentClient) => {
 
 	let client = new Client(wsi, ClientStatusEnum.CONNECT);
 	
-	currentClient = clientService.add(client);
+	currentClient = DataManager.clientService.add(client);
 
 	console.log(`Connect new client with id: ${currentClient.id}`);
 	
@@ -59,8 +50,6 @@ ws.on('connection', (wsi, request, currentClient) => {
 				console.log(`Error data client id: ${currentClient.id}`);
 
 				wsi.close();
-
-				clientService.remove(currentClient.id);
 			}
 
 
@@ -72,7 +61,7 @@ ws.on('connection', (wsi, request, currentClient) => {
 
 			wsi.close();
 
-			userService.remove(currentClient.id);
+			DataManager.userService.remove(currentClient.id);
 
 			return;
 		}
@@ -80,11 +69,30 @@ ws.on('connection', (wsi, request, currentClient) => {
 
 	wsi.on('close', () => {
 
+		const player = currentClient.getPlayer();
+
+		player.setClient(null);
+
+		currentClient.setPlayer(null);
+
+		let room = player.getRoom();
+
+		if(room != null) {
+
+			if(room.hostPlayer.id == player.id) {
+				room.removePlayer(player);
+				player.setRoom(null);
+				DataManager.roomService.remove(room.id);
+			} else {
+				room.removePlayer(player);
+				player.setRoom(null);
+			}
+		}
+
+		DataManager.playerService.remove(player.id);
+
+		DataManager.clientService.remove(currentClient.id);
+
 		console.log(`User with id ${currentClient.id} close`)
-	});
-
-	wsi.on('disconnect', () => {
-
-		console.log(`User with id ${currentClient.id} disconnected`)
 	});
 });

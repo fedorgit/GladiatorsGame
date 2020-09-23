@@ -2,10 +2,30 @@ const Service = require('./service.js')
 const Map = require('../model/map.js')
 const fs = require('fs')
 
-class MapService extends Service {
+module.exports = class MapService extends Service {
 
     constructor(){
         super();
+    }
+
+    getSimpleList() {
+
+        const mapList = this.getList();
+
+        console.log(mapList);
+
+        let mapSimpleList = [];
+
+        for(let map of mapList) {
+
+            let mapSimple = {id: map.id, name: map.name, description: map.description }
+
+            mapSimpleList.push(mapSimple)
+        }
+
+        console.log(mapSimpleList);
+
+        return mapSimpleList;
     }
 
     loadMaps(path, files) {
@@ -22,7 +42,3 @@ class MapService extends Service {
         }
     }
 }
-
-const mapService = new MapService();
-
-module.exports = mapService;

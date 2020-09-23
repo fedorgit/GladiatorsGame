@@ -12,6 +12,7 @@ module.exports = class Player extends Entity  {
     constructor(name) {
         super();
         this.name = name;
+        this.room = null;
     }
 
     getClient() {
@@ -22,5 +23,30 @@ module.exports = class Player extends Entity  {
     setClient(client) {
 
         this.#client = client;
+    }
+
+    setRoom(room) {
+
+        if(this.room != null) {
+
+            console.warn(`Player id: ${this.id} not null room id: ${this.room.id}`);
+        }
+
+        this.room = room;
+    }
+
+    getRoom() {
+
+        return this.room;
+    }
+
+    getPublic() {
+
+        const model = {
+            id: this.id,
+            name: this.name
+        }
+
+        return model;
     }
 }

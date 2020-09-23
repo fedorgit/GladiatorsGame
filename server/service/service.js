@@ -36,14 +36,8 @@ module.exports = class Service {
     }
 
     getList() {
-    
-        let result = [];
 
-        for(const [_, element] of Object.entries(this.elements)) {
-            result.push(element);
-        }
-
-        return result;
+        return Object.values(this.elements);
     }
 
     getDict() {

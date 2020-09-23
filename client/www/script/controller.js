@@ -143,17 +143,62 @@ const Controller = {
 
             case ClientStatusEnum.CREATE_ROOM: {
 
+                if(!data.hasOwnProperty('maps')) {
+
+                    console.error(`Not found maps data`);
+
+                    return false;
+                }
+
+                ViewService.setComponent(data.componentEnumId);
+
+                ViewService.setSimpleMapsData(data.maps);
 
                 return true;
             }
 
             case ClientStatusEnum.SELECT_ROOM: {
 
+                ViewService.setComponent(data.componentEnumId);
+
+                ViewService.setSelectRoomsData(data.rooms);
 
                 return true;
             }
 
+            case ClientStatusEnum.HOST_LOBBY: {
 
+                ViewService.setComponent(data.componentEnumId);
+
+                ViewService.setHostLobbyData(data.maps, data.lobby);
+
+                return true;
+            }
+
+            case ClientStatusEnum.CLIENT_LOBBY: {
+
+                ViewService.setComponent(data.componentEnumId);
+
+                ViewService.setClientLobbyData(data.lobby);
+
+                return true;
+            }
+
+            case ClientStatusEnum.UPDATE_LOBBY: {
+
+                actionLobbyFlagId = data.actionLobbyFlagId;
+
+                if(actionLobbyFlagId & ActionLobbyFlag.MAP)
+                    ViewService.updateMapLobby(data.map);
+
+                if(actionLobbyFlagId & ActionLobbyFlag.SLOT)
+                    ViewService.updateMapLobby(data.slots);
+
+                if(actionLobbyFlagId & ActionLobbyFlag.STASH)
+                    ViewService.updateMapLobby(data.stashs);
+
+                return true;
+            }
         }
     },
 
