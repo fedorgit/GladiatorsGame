@@ -16,7 +16,7 @@ const Client = require('./model/client.js')
 
 configService.init('./config.json');
 
-DataManager.mapService.loadMaps('./resource/map', ['example.json']);
+DataManager.mapService.loadMaps('./resource/map', ['example.json', 'general.json']);
 
 const host = configService.config['host'];
 const port = configService.config['port'];
