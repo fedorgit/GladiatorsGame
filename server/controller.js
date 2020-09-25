@@ -1,4 +1,4 @@
-const gameManager = require('./gameManager.js')
+const GameManager = require('./GameManager.js')
 
 const Controller = {
 
@@ -20,27 +20,27 @@ const Controller = {
 
             case ClientStatusEnum.CONNECT: {
 
-                return gameManager.actionConnect(currentClient, data);
+                return GameManager.actionConnect(currentClient, data);
             }
 
             case ClientStatusEnum.SELECT_NAME: {
 
-                return gameManager.actionSelectName(currentClient, data);
+                return GameManager.actionSelectName(currentClient, data);
             }
 
             case ClientStatusEnum.ACTION_ROOM: {
 
-                return gameManager.actionSelectActionRoom(currentClient, data);
+                return GameManager.actionSelectActionRoom(currentClient, data);
             }
 
             case ClientStatusEnum.CREATE_ROOM: {
 
-                return gameManager.actionCreateRoom(currentClient, data);
+                return GameManager.actionCreateRoom(currentClient, data);
             }
 
             case ClientStatusEnum.SELECT_ROOM: {
 
-                return gameManager.actionSelectRoom(currentClient, data);
+                return GameManager.actionSelectRoom(currentClient, data);
             }
 
             case ClientStatusEnum.LOBBY: {

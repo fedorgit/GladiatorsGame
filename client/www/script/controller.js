@@ -27,10 +27,6 @@ const Controller = {
         this.socket = new WebSocket(this.url);
     
         this.socket.onopen = (event) => {
-    
-            //let currentUser = new CurrentUser();
-    
-            //gameManager.setCurrentUser(currentUser);
             
             let name = ViewService.getViewConnectName();
 

@@ -10,7 +10,7 @@ module.exports = class Room extends Entity  {
 
     constructor(hostPlayer, name, map) {
         super();
-        this.hostPlayer = hostPlayer;
+        
         this.name = name;
         this.map = map;
         this.playerCountMax = map.playerCount;
@@ -23,19 +23,20 @@ module.exports = class Room extends Entity  {
             this.slots.push(new Slot(i, map.start[i]));
 
         // TODO: wtf?
-        this.players = {[this.hostPlayer.id]: this.hostPlayer};
+        this.hostPlayer = hostPlayer;
         this.slots[0].setHostPlayer(hostPlayer);
+        this.customerPlayers = {};
     }
 
     addPlayer(player) {
 
-        this.players[player.id] = player;
+        this.customerPlayers[player.id] = player;
 
         for(let slot of this.slots) {
 
             if(slot.player == null) {
                 
-                slot.setPlayer(player);
+                slot.setClientPlayer(player);
 
                 return;
             }
@@ -52,7 +53,7 @@ module.exports = class Room extends Entity  {
 
         for(let slot of this.slots) {
 
-            if(slot.player.id = player.id) {
+            if(slot.player.id == player.id) {
 
                 slot.player = null;
 
@@ -64,11 +65,11 @@ module.exports = class Room extends Entity  {
 
     removePlayer(player) {
 
-        delete this.players[player.id];
+        delete this.customerPlayers[player.id];
 
         for(let slot of this.slots) {
 
-            if(slot.player.id = player.id) {
+            if(slot.player.id == player.id) {
 
                 slot.player = null;
 
@@ -96,21 +97,19 @@ module.exports = class Room extends Entity  {
         return room;
     }
 
-
     getLobby() {
 
-        console.log(this.players);
-
         // {id, name}
-        const players = Object.values(this.players).map(player => player.getPublic());
+        const customerPlayers = Object.values(this.customerPlayers).map(player => player.getPublic());
 
         const slots = this.slots.map(slot => slot.getPublic());
 
-        const stashs = this.stashs.map(player => player.getPublic() );
+        const stashs = this.stashs.map(player => player.getPublic());
 
         const lobby = {
             id: this.id,
-            players: players,
+            hostPlayer: this.hostPlayer.getPublic(),
+            customerPlayers: customerPlayers,
             slots: slots,
             stashs: stashs,
             map: {

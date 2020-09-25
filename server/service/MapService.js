@@ -12,8 +12,6 @@ module.exports = class MapService extends Service {
 
         const mapList = this.getList();
 
-        console.log(mapList);
-
         let mapSimpleList = [];
 
         for(let map of mapList) {
@@ -22,8 +20,6 @@ module.exports = class MapService extends Service {
 
             mapSimpleList.push(mapSimple)
         }
-
-        console.log(mapSimpleList);
 
         return mapSimpleList;
     }

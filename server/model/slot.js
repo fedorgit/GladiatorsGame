@@ -12,7 +12,7 @@ module.exports = class Slot {
      * 
      * @param {Player} player 
      */
-    setPlayer(player) {
+    setClientPlayer(player) {
 
         this.player = player;
     }

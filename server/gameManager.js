@@ -5,7 +5,7 @@ const Player = require('./model/player.js');
 const Room = require('./model/room.js');
 const DataManager = require('./dataManager.js');
 
-const gameManager = {
+const GameManager = {
 
     actionConnect(client, data) {
 
@@ -224,8 +224,6 @@ const gameManager = {
 
         const lobby = player.room.getLobby();
 
-        const isHost = player.id == player.room.hostPlayer.id;
-
         let model = {
             clientStatusEnumId: client.status,
             componentEnumId: ComponentEnum.HOST_LOBBY,
@@ -273,7 +271,16 @@ const gameManager = {
 
         client.status = ClientStatusEnum.CLIENT_LOBBY;
 
-        this.sendClientLobbyData(client);
+        for(let customerPlayer of Object.values(room.customerPlayers)) {
+
+            const updateCustomerClient = customerPlayer.getClient();
+
+            this.sendClientLobbyData(updateCustomerClient);
+        }
+
+        const updateHostClient = room.hostPlayer.getClient();
+
+        this.sendHostLobbyData(updateHostClient);
 
         return true;
     },
@@ -293,7 +300,70 @@ const gameManager = {
         let data = JSON.stringify(model);
 
         client.send(data);
+    },
+
+    sendUpdateHostLobbyData(client) {
+        
+    },
+
+    sendUpdateClientLobbyData(client) {
+
+        const player = client.getPlayer();
+
+        const lobby = player.room.getLobby();
+
+        let model = {
+            clientStatusEnumId: client.status,
+            componentEnumId: ComponentEnum.CLIENT_LOBBY,
+            lobby: lobby
+        }
+
+        let data = JSON.stringify(model);
+
+        client.send(data);
+    },
+
+    updateRoom(room) {
+
+        for(let customerPlayer of Object.values(room.customerPlayers)) {
+
+            const updateCustomerClient = customerPlayer.getClient();
+
+            this.sendClientLobbyData(updateCustomerClient);
+        }
+
+        const updateHostClient = room.hostPlayer.getClient();
+
+        this.sendHostLobbyData(updateHostClient);
+    },
+
+    closeClient(client) {
+
+        const player = client.getPlayer();
+
+		player.setClient(null);
+
+		client.setPlayer(null);
+
+		let room = player.getRoom();
+
+		if(room != null) {
+
+			if(room.hostPlayer.id == player.id) {
+				room.removePlayer(player);
+				player.setRoom(null);
+				DataManager.roomService.remove(room.id);
+			} else {
+                room.removePlayer(player);
+                this.updateRoom(room);
+				player.setRoom(null);
+			}
+		}
+
+		DataManager.playerService.remove(player.id);
+
+		DataManager.clientService.remove(client.id);
     }
 }
 
-module.exports = gameManager;
+module.exports = GameManager;

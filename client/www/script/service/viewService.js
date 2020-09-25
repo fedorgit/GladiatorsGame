@@ -192,7 +192,9 @@ const ViewService = {
 
         for(let option of options)
             this.selectMapHostLobbyElement.appendChild(option);
-            
+        
+        while (this.slotHostLobbyElement.firstChild)
+            this.slotHostLobbyElement.removeChild(this.slotHostLobbyElement.firstChild);
 
         for(let slot of lobby.slots) {
 
@@ -212,6 +214,9 @@ const ViewService = {
     setClientLobbyData(lobby) {
 
         this.nameMapHostLobbyElement.prepend(`${lobby.map.name}`);
+
+        while (this.slotClientLobbyElement.firstChild)
+            this.slotClientLobbyElement.removeChild(this.slotClientLobbyElement.firstChild);
 
         for(let slot of lobby.slots) {
 

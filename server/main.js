@@ -10,7 +10,8 @@ const Controller = require('./controller.js')
 
 const User = require('./model/user.js')
 
-const Client = require('./model/client.js')
+const Client = require('./model/client.js');
+const GameManager = require('./gameManager.js');
 
 
 
@@ -69,29 +70,7 @@ ws.on('connection', (wsi, request, currentClient) => {
 
 	wsi.on('close', () => {
 
-		const player = currentClient.getPlayer();
-
-		player.setClient(null);
-
-		currentClient.setPlayer(null);
-
-		let room = player.getRoom();
-
-		if(room != null) {
-
-			if(room.hostPlayer.id == player.id) {
-				room.removePlayer(player);
-				player.setRoom(null);
-				DataManager.roomService.remove(room.id);
-			} else {
-				room.removePlayer(player);
-				player.setRoom(null);
-			}
-		}
-
-		DataManager.playerService.remove(player.id);
-
-		DataManager.clientService.remove(currentClient.id);
+		GameManager.closeClient(currentClient);
 
 		console.log(`User with id ${currentClient.id} close`)
 	});
