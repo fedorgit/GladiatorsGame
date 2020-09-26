@@ -2,14 +2,14 @@
 	"name": "general",
 	"description": "You are a general surrounded by enemies on all sides - they will not escape from you!",
 	"players": 5,
-	"start": [1, 4, 10, 14, 16],
-	"graphs": [
+	"start": [0, 3, 10, 14, 16],
+	"arenas": [
 		{"id": 0, "x": 1, "y": 1, "links": [1] },
 		{"id": 1, "x": 2, "y": 3, "links": [0, 2] },
 		{"id": 2, "x": 4, "y": 5, "links": [1, 3, 8] },
-		{"id": 3, "x": 7, "y": 6, "links": [2, 8, 7, 6, 4] },
+		{"id": 3, "x": 7, "y": 6, "links": [2, 8, 6, 4, 11] },
 		{"id": 4, "x": 8, "y": 4, "links": [3, 5] },
-		{"id": 5, "x": 6, "y": 4, "links": [0, 1, 2, 4, 6] },
+		{"id": 5, "x": 7, "y": 2, "links": [4] },
 		{"id": 6, "x": 7, "y": 9, "links": [3, 7] },
 		{"id": 7, "x": 9, "y": 10, "links": [6] },
 		{"id": 8, "x": 5, "y": 7, "links": [3, 2, 9] },

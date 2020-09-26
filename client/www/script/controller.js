@@ -195,6 +195,29 @@ const Controller = {
 
                 return true;
             }
+
+            case ClientStatusEnum.GAME: {
+
+                ViewService.setComponent(data.componentEnumId);
+
+                EngineManager.init();
+
+                return true;
+            }
+
+            case ClientStatusEnum.AREA: {
+
+                EngineManager.showArea(data.area);
+
+                return true;
+            }
+
+            case ClientStatusEnum.BATTLE: {
+
+                EngineManager.showBattle(data.battle);
+
+                return true;
+            }
         }
     },
 

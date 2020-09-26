@@ -1,9 +1,12 @@
 
-const Enum = require('./enum.js');
+const Enum = require('./enum');
+const DataManager = require('./dataManager');
 
-const Player = require('./model/player.js');
-const Room = require('./model/room.js');
-const DataManager = require('./dataManager.js');
+const Player = require('./model/player');
+const Room = require('./model/room');
+const Game = require('./model/game');
+const Hero = require('./model/hero');
+
 
 const GameManager = {
 
@@ -302,25 +305,118 @@ const GameManager = {
         client.send(data);
     },
 
-    sendUpdateHostLobbyData(client) {
-        
+    actionLobby(currentClient, data) {
+
+        if(!data.hasOwnProperty('actionLobbyEnumId')) {
+
+            console.error(`Protocol format error: actionLobbyEnumId`);
+
+            return false;
+        }
+
+        const actionLobbyEnumId = data.actionLobbyEnumId;
+
+        if(actionLobbyEnumId == ActionLobbyEnum.LEAVE) {
+            
+            return true;
+        }
+
+        if(actionLobbyEnumId == ActionLobbyEnum.START) {
+            
+            const player = currentClient.getPlayer();
+
+            const room = player.getRoom();
+
+            if(room.hostPlayer != player) {
+
+                console.warn(`Player id: ${player.id} not host lobby room id: ${room.id}`)
+
+                return false;
+            }
+
+            let players = room.getGamePlayers();
+
+            // Создание комнаты
+            let game = new Game(room.name, players, room.map);
+
+            game = DataManager.gameService.add(game);
+
+            for(let player of Object.values(players)) {
+                
+                player.setGame(game);
+
+                const arenaId = player.getRoom().getArenaId(player);
+
+                let hero = new Hero(player.name, 1, arenaId);
+
+                hero = DataManager.heroService.add(hero);
+
+                player.setHero(hero);
+
+                const client = player.getClient();
+
+                client.status = ClientStatusEnum.GAME;
+                
+                this.sendGameData(client);
+            }
+
+            for(let player of Object.values(players)) {
+
+                const client = player.getClient();
+
+                client.status = ClientStatusEnum.AREA;
+
+                this.sendAreaData(client);
+            }
+
+            return true;
+        }
+
+        return false;
     },
 
-    sendUpdateClientLobbyData(client) {
+    sendGameData(client) {
+        
+        const player = client.getPlayer();
+
+        const game = player.getGame();
+
+        const model = {
+            clientStatusEnumId: client.status,
+            componentEnumId: ComponentEnum.GAME,
+            game: game.getPublic()
+        }
+
+        const data = JSON.stringify(model);
+
+        client.send(data);
+    },
+
+    sendAreaData(client) {
 
         const player = client.getPlayer();
 
-        const lobby = player.room.getLobby();
+        const game = player.getGame();
 
-        let model = {
-            clientStatusEnumId: client.status,
-            componentEnumId: ComponentEnum.CLIENT_LOBBY,
-            lobby: lobby
+        const players = Object.values(game.players).map(player => player.getAreaPublic());
+        
+        const area = {
+            players: players,
+            map: game.map
         }
 
-        let data = JSON.stringify(model);
+        const model = {
+            clientStatusEnumId: client.status,
+            area: area
+        }
+
+        const data = JSON.stringify(model);
 
         client.send(data);
+    },
+
+    sendBattleData(client) {
+
     },
 
     updateRoom(room) {

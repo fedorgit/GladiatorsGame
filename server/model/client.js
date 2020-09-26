@@ -7,12 +7,13 @@
 
 module.exports = class Client extends Entity {
 
+    #wsi = null;
     #user = null;
     #player = null;
 
     constructor(wsi, status){
         super();
-        this.wsi = wsi;
+        this.#wsi = wsi;
         this.status = status;
     }
 
@@ -64,6 +65,6 @@ module.exports = class Client extends Entity {
      */
     send(data) {
 
-        this.wsi.send(data);
+        this.#wsi.send(data);
     }
 }

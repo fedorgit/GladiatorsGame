@@ -13,6 +13,8 @@ module.exports = class Player extends Entity  {
         super();
         this.name = name;
         this.room = null;
+        this.game = null;
+        this.hero = null;
     }
 
     getClient() {
@@ -25,6 +27,11 @@ module.exports = class Player extends Entity  {
         this.#client = client;
     }
 
+    getRoom() {
+
+        return this.room;
+    }
+
     setRoom(room) {
 
         if(this.room != null) {
@@ -35,9 +42,29 @@ module.exports = class Player extends Entity  {
         this.room = room;
     }
 
-    getRoom() {
+    getGame() {
 
-        return this.room;
+        return this.game;
+    }
+
+    setGame(game) {
+
+        if(this.game != null) {
+
+            console.warn(`Player id: ${this.id} not null game id: ${this.game.id}`);
+        }
+
+        this.game = game;
+    }
+
+    getHero() {
+        
+        return this.hero;
+    }
+
+    setHero(hero) {
+
+        this.hero = hero
     }
 
     getPublic() {
@@ -45,6 +72,19 @@ module.exports = class Player extends Entity  {
         const model = {
             id: this.id,
             name: this.name
+        }
+
+        return model;
+    }
+
+    getAreaPublic() {
+
+        const hero = this.hero.getAreaPublic();
+
+        const model = {
+            id: this.id,
+            name: this.name,
+            hero: hero
         }
 
         return model;

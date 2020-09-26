@@ -43,12 +43,12 @@ const Controller = {
                 return GameManager.actionSelectRoom(currentClient, data);
             }
 
-            case ClientStatusEnum.LOBBY: {
+            case ClientStatusEnum.HOST_LOBBY: {
 
-                return true;
+                return GameManager.actionLobby(currentClient, data);
             }
 
-            case ClientStatusEnum.UPDATE_LOBBY: {
+            case ClientStatusEnum.CLIENT_LOBBY: {
 
                 return true;
             }

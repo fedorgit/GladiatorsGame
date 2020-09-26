@@ -80,6 +80,35 @@ module.exports = class Room extends Entity  {
         console.log(`Removed player id: ${player.id} from room id: ${this.id}`);
     }
 
+    getArenaId(player) {
+
+        for(let slot of this.slots) {
+            if(slot.player == player) {
+                return slot.positionId;
+            }
+        }
+
+        console.error(`Player id: ${player.id} not select slot`);
+
+        return NaN;
+    }
+
+    getGamePlayers() {
+
+        let players = {};
+
+        players[this.hostPlayer.id] = this.hostPlayer;
+
+        for(let id in this.customerPlayers) {
+
+            let player = this.customerPlayers[id];
+
+            players[id] = player;
+        }
+        
+        return players;
+    }
+
     getPublic() {
 
         const room = {

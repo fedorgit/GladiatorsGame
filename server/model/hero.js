@@ -2,11 +2,27 @@
  * Hero - непосредственный менеджер гладиаторов (Данная сущьность будет необходима при нескольких менеджерах)
  * 
  */
+const Entity = require('./entity')
 
-class Hero {
-    constructor(id){
-        this.id = id;
+module.exports = class Hero extends Entity {
 
-        this.items = {}
+    constructor(name, modelId, arenaId){
+        super();
+        this.name = name;
+        this.modelId = modelId;
+        this.arenaId = arenaId;
+        this.gladiators = {};
+    }
+
+    getAreaPublic() {
+
+        const model = {
+            name: this.name,
+            modelId: this.modelId,
+            arenaId: this.arenaId
+        }
+
+        return model;
+
     }
 }

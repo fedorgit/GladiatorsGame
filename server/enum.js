@@ -25,8 +25,10 @@ global.ClientStatusEnum = Object.freeze({
     CLIENT_LOBBY: 7,
     UPDATE_LOBBY: 8,
     GAME: 9,
-    SETTING: 10,
-    DISCONNECT: 11
+    AREA: 10,
+    BATTLE: 11,
+    SETTING: 12,
+    DISCONNECT: 13
 });
 
 
@@ -34,4 +36,10 @@ global.ActionRoomEnum = Object.freeze({
     NONE: 0,
     CREATE: 1,
     SELECT: 2
+});
+
+global.ActionLobbyEnum = Object.freeze({
+    NONE: 0,
+    START: 1,
+    LEAVE: 2
 });

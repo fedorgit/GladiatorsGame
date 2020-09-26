@@ -68,5 +68,12 @@ const Terminal = {
 
     startGame() {
 
+        const model = {
+            actionLobbyEnumId: ActionLobbyEnum.START
+        }
+
+        const data = JSON.stringify(model);
+
+        Controller.send(data);
     }
 }

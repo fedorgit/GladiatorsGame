@@ -15,6 +15,7 @@ const ViewService = {
     componentGameElement: null,
     componentSettingElement: null,
     componentDisconnectElement: null,
+    componentGameElement: null,
 
     componentElements: null,
 
@@ -31,6 +32,8 @@ const ViewService = {
     slotClientLobbyElement: null,
     stashClientLobbyElement: null,
 
+    
+
     init() {
         this.componentConnectElement = document.getElementById('js-component-connect');
         this.componentSelectNameElement = document.getElementById('js-component-select-name');
@@ -42,6 +45,7 @@ const ViewService = {
         this.componentGameElement = document.getElementById('js-component-game');
         this.componentSettingElement = document.getElementById('js-component-setting');
         this.componentDisconnectElement = document.getElementById('js-component-disconnect');
+        this.componentGameElement = document.getElementById('js-component-game');
 
         this.componentElements = document.getElementsByClassName('js-component');
 
@@ -61,7 +65,6 @@ const ViewService = {
         this.nameMapHostLobbyElement = document.getElementById('js-name-map-client-lobby');
         this.slotClientLobbyElement = document.getElementById('js-slot-client-lobby');
         this.stashClientLobbyElement = document.getElementById('js-stash-client-lobby');
-
     },
 
     /**
@@ -112,6 +115,11 @@ const ViewService = {
             case ComponentEnum.CLIENT_LOBBY:
 
                 this.componentClientLobbyElement.style = 'display: block;';
+            break;
+
+            case ComponentEnum.GAME:
+
+                this.componentGameElement.style = 'display: block;';
             break;
         }
     },

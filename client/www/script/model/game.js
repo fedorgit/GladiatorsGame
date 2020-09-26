@@ -3,10 +3,11 @@
  * 
  */
 
-class Hero {
-    constructor(id){
+class Game {
+    constructor(id, name, players, map){
         this.id = id;
-
-        this.items
+        this.name = name;
+        this.players = players;
+        this.map = map;
     }
 }

@@ -5,7 +5,7 @@
 
 const Entity = require('./entity.js')
 
-const Graph = require('./graph.js')
+const Arene = require('./arena.js')
 
 module.exports = class Map extends Entity  {
 
@@ -20,14 +20,16 @@ module.exports = class Map extends Entity  {
 
         this.playerCount = model.players;
 
-        this.graphs = [];
+        this.arenas = [];
 
-        for(let g of model.graphs) {
+        /*for(let a of model.arenas) {
 
-            let graph = new Graph(g.id, g.x, g.y, g.links);
+            let arena = new Arene(a.id, a.x, a.y, a.links);
 
-            this.graphs.push(graph);
-        }
+            this.arenas.push(arena);
+        }*/
+
+        this.arenas = model.arenas.map(arena => new Arene(arena.id, arena.x, arena.y, arena.links))
         
     }
 }
