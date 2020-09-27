@@ -4,7 +4,8 @@
 const ModelService = {
 	
 	srcModel: [
-		{ id: 0, 	src: 'error.glb', 					name: 'ERROR' }
+		{ id: 0, 	src: 'error.glb', 					name: 'ERROR' },
+		{ id: 1, 	src: 'tura.glb', 					name: 'TURA' }
 	],
 	iterator: 0,
 	models: {}

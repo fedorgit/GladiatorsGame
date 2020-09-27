@@ -1,6 +1,6 @@
 {
   "name": "gladiatorsgame",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Going to Die - пошаговая мультиплеерная стратегия по тематике гладиаторских боев",
   "main": "web-server.js",
   "scripts": {

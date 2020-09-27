@@ -1,5 +1,4 @@
 
-
 const EngineManager = {
 
     canvas: null,
@@ -16,8 +15,8 @@ const EngineManager = {
     init() {
         this.canvas = document.getElementById('js-canvas-game');
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
-        this.camera.position.set(0, 0, 45);
+        this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        this.camera.position.set(0, 0, 30);
 
         this.renderer = new THREE.WebGLRenderer({canvas: this.canvas, antialias: true});
         this.renderer.setClearColor(0xFFFFFF);
@@ -28,9 +27,11 @@ const EngineManager = {
         this.light = new THREE.AmbientLight(0xFFFFFF, 1);
         this.scene.add(this.light);
         
-        addEventListener('resize', this.onresize);
-        
         this.clock = new THREE.Clock();
+
+        addEventListener('resize', this.onresize);
+
+        ControlManager.init(this.canvas, this.camera);
 
         this.engine();
     },
@@ -46,7 +47,7 @@ const EngineManager = {
 
         for(let arena of area.map.arenas) {
 
-            let geometry = new THREE.TorusBufferGeometry(1, 0.3, 10, 16);
+            let geometry = new THREE.TorusBufferGeometry(0.5, 0.2, 10, 16);
             let material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
             let model = new THREE.Mesh( geometry, material );
             model.position.x = arena.x;
@@ -119,6 +120,7 @@ const EngineManager = {
         var time = this.clock.getDelta();
     
         //UnitService.updateAnimationUnits(time);
+        ControlManager.update(time);
         
         this.renderer.render( this.scene, this.camera );
     }
