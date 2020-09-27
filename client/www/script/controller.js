@@ -200,6 +200,8 @@ const Controller = {
 
                 ViewService.setComponent(data.componentEnumId);
 
+                DataManager.setCurrentPlayer(data.player);
+
                 EngineManager.init();
 
                 return true;

@@ -10,6 +10,8 @@ const EngineManager = {
 
     arenas: [],
     paths: [],
+    paths: [],
+    passages: [],
     heroes: [],
 
     init() {
@@ -103,8 +105,32 @@ const EngineManager = {
 
 
         // Выделить (подсветить) пути возможного перемещения
+        const currentPlayer = DataManager.currentPlayer;
 
-        
+        const currentHero = currentPlayer.hero;
+
+        const currenArena = arenaDict[currentHero.arenaId];
+
+        const links = currenArena.links;
+
+        for(let id of links) {
+
+            const arenaLink = arenaDict[id];
+
+            let material = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 3.2});
+            let points = [];
+            points.push( new THREE.Vector3( currenArena.x, currenArena.y, 0 ) );
+            points.push( new THREE.Vector3( arenaLink.x, arenaLink.y, 0 ) );
+            let geometry = new THREE.BufferGeometry().setFromPoints( points );
+            let line = new THREE.Line( geometry, material );
+
+            this.passages.push(line);
+        }
+
+        for(let passage of this.passages) {
+
+            this.scene.add(passage);
+        }
 
     },
 

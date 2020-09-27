@@ -8,6 +8,7 @@ const DataManager = {
 
     currentUser: null,
     currentClient: null,
+    currentPlayer: null,
 
     init() {
         this.userService = new UserService();
@@ -29,6 +30,10 @@ const DataManager = {
      */
     setCurrentClient(currentClient) {
         this.currentClient = currentClient;
+    },
+
+    setCurrentPlayer(currentPlayer) {
+        this.currentPlayer = currentPlayer;
     },
 
     selectAction(selectActionEnumId) {

@@ -384,7 +384,8 @@ const GameManager = {
         const model = {
             clientStatusEnumId: client.status,
             componentEnumId: ComponentEnum.GAME,
-            game: game.getPublic()
+            game: game.getPublic(),
+            player: player.getAreaPublic()
         }
 
         const data = JSON.stringify(model);

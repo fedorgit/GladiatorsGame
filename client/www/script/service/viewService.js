@@ -73,7 +73,7 @@ const ViewService = {
      */
     setComponent(сomponentEnumId) {
 
-        console.log(`Set component: ${сomponentEnumId}`)
+        console.log(`Set component: ${сomponentEnumId}`);
 
         for(let component of this.componentElements)
             component.style = 'display: none;';
@@ -129,8 +129,6 @@ const ViewService = {
      * @param {[Object]} maps 
      */
     setSimpleMapsData(maps) {
-
-        console.log(this.selectMapCreateRoomElement);
 
         while (this.selectMapCreateRoomElement.firstChild)
             this.selectMapCreateRoomElement.removeChild(this.selectMapCreateRoomElement.firstChild);
